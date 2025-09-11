@@ -42,10 +42,11 @@
             <input type="file" name="file" id="file" required>
         </p>
 
-        <p>
-            <label for="title">タイトル</label>
-            <input type="text" name="title" id="title" required>
-        </p>
+		<p>
+    		<label for="title"><%= titleLabel %></label>
+    		<input type="text" name="title" id="title" required>
+		</p>
+
 
         <p>
             <label for="visibility"><%= visibilityLabel %></label>
