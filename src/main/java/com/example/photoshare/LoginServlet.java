@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/photo/LoginServlet")
 public class LoginServlet extends HttpServlet {
 
-    private static final String DB_URL = "jdbc:postgresql://localhost:5432/photos";
+    private static final String DB_URL = "jdbc:postgresql://localhost:5432/photoshare";
     private static final String DB_USER = "postgres";
     private static final String DB_PASS = "postgres";
 
