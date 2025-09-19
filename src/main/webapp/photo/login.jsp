@@ -6,6 +6,13 @@
         lang = "ja"; // デフォルトは日本語
     }
 
+    // ログアウト処理のチェック
+    if (request.getParameter("logout") != null) {
+        session.invalidate(); // セッションを無効化
+        response.sendRedirect(request.getContextPath() + "/photo/photo_home.jsp"); // ホームへリダイレクト
+        return; // これ以上処理を行わない
+    }
+
     // 言語によって表示テキストを切り替える
     String pageTitle = "ログイン";
     String h1Title = "ログイン";
@@ -13,7 +20,7 @@
     String passwordLabel = "パスワード";
     String submitButtonValue = "ログイン";
     String backToHomeText = "ホームに戻る";
-    
+
     // エラーメッセージの文字列
     String error = (String) request.getAttribute("error");
     if (error != null) {
@@ -22,7 +29,7 @@
             // 例: if (error.equals("ログインに失敗しました")) { error = "Login failed."; }
         }
     }
-    
+
     if ("en".equals(lang)) {
         pageTitle = "Login";
         h1Title = "Login";
@@ -37,7 +44,7 @@
 <head>
     <meta charset="UTF-8">
     <title><%= pageTitle %></title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css"> </head>
 </head>
 <body>
 <div class="container">
@@ -56,12 +63,12 @@
         <label for="password"><%= passwordLabel %></label>
         <input type="password" name="password" id="password" required>
     </p>
-    <div class="button-group">
+    <p>
         <input type="submit" value="<%= submitButtonValue %>" class="button">
+        <a href="register.jsp" class="button secondary">新規登録</a>
         <a href="photo_home.jsp" class="button secondary"><%= backToHomeText %></a>
-    </div>
-</form>
-
+    </p>
+    </form>
 </div>
 </body>
 </html>

@@ -6,6 +6,8 @@ import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.Timestamp;
+import java.util.Date;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -24,7 +26,7 @@ import jakarta.servlet.http.Part;
 public class PhotoUploadServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    // アップロード先フォルダ（JSP からの相対パス）
+    // アップロード先フォルダ
     private static final String UPLOAD_DIR = "uploads";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -35,17 +37,17 @@ public class PhotoUploadServlet extends HttpServlet {
             return;
         }
 
-        // ファイル取得
+        // フォームからパラメータ取得
         Part filePart = request.getPart("file");
-        String fileName = Path.of(filePart.getSubmittedFileName()).getFileName().toString();
-
-        // タイトル・公開設定取得
         String title = request.getParameter("title");
-        String visibility = request.getParameter("visibility"); // "public" または "private"
+        String visibility = request.getParameter("visibility");
         boolean isPublic = "public".equalsIgnoreCase(visibility);
 
+        // ファイル名取得
+        String fileName = Path.of(filePart.getSubmittedFileName()).getFileName().toString();
+
         // アップロード先パス
-        String uploadPath = getServletContext().getRealPath("") + File.separator + "photo" + File.separator + UPLOAD_DIR;
+        String uploadPath = getServletContext().getRealPath("/photo/uploads");
         File uploadDir = new File(uploadPath);
         if (!uploadDir.exists()) uploadDir.mkdirs();
 
@@ -57,13 +59,14 @@ public class PhotoUploadServlet extends HttpServlet {
         PreparedStatement ps = null;
         try {
             Class.forName("org.postgresql.Driver");
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/photos", "username", "password");
-            String sql = "INSERT INTO photos (filename, uploader, is_public, title) VALUES (?, ?, ?, ?)";
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/photoshare", "postgres", "postgres");
+            String sql = "INSERT INTO photos (filename, uploader, is_public, title, upload_date) VALUES (?, ?, ?, ?, ?)";
             ps = conn.prepareStatement(sql);
             ps.setString(1, fileName);
             ps.setString(2, username);
             ps.setBoolean(3, isPublic);
             ps.setString(4, title);
+            ps.setTimestamp(5, new Timestamp(new Date().getTime()));
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
