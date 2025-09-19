@@ -20,6 +20,7 @@
     String passwordLabel = "パスワード";
     String submitButtonValue = "ログイン";
     String backToHomeText = "ホームに戻る";
+    String registerButtonText = "新規登録";
 
     // エラーメッセージの文字列
     String error = (String) request.getAttribute("error");
@@ -37,6 +38,7 @@
         passwordLabel = "Password";
         submitButtonValue = "Login";
         backToHomeText = "Back to Home";
+        registerButtonText = "Register";
     }
 %>
 <!DOCTYPE html>
@@ -44,7 +46,7 @@
 <head>
     <meta charset="UTF-8">
     <title><%= pageTitle %></title>
-    <link rel="stylesheet" href="../style.css"> </head>
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 <div class="container">
@@ -65,7 +67,7 @@
     </p>
     <p>
         <input type="submit" value="<%= submitButtonValue %>" class="button">
-        <a href="register.jsp" class="button secondary">新規登録</a>
+        <a href="register.jsp" class="button secondary"><%= registerButtonText %></a>
         <a href="photo_home.jsp" class="button secondary"><%= backToHomeText %></a>
     </p>
     </form>
